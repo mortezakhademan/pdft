@@ -102,6 +102,23 @@ func (i *PDFt) OpenFrom(r io.Reader) error {
 	return nil
 }
 
+// OpenFrom open pdf from io.Reader
+func (i *PDFt) Read(b []byte) error {
+	//init
+	i.fontDatas = make(map[string]*PDFFontData)
+	i.curr.lineWidth = 1.0
+	i.pdfImgsMd5Map = make(map[string]*PDFImageData)
+	//open
+	err := PDFParseByBytesArray(b, &i.pdf)
+	if err != nil {
+		return err
+	}
+
+	i.ShowCellBorder(false)
+
+	return nil
+}
+
 // DuplicatePageAfter ...
 func (i *PDFt) DuplicatePageAfter(targetPageNumber, position int) error {
 	pageObjIds, err := i.pdf.getPageObjIDs()

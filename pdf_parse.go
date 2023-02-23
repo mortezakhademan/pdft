@@ -14,17 +14,23 @@ func PDFParse(file io.Reader, outPdf *PDFData) error {
 		return err
 	}
 
-	err = parseXref(&raw, outPdf)
+	return PDFParseByBytesArray(raw, outPdf)
+}
+
+// PDFParseByBytesArray parse pdf with byte array data
+func PDFParseByBytesArray(fileData []byte, outPdf *PDFData) error {
+
+	err := parseXref(&fileData, outPdf)
 	if err != nil {
 		return err
 	}
 
-	err = parseTrailer(&raw, outPdf)
+	err = parseTrailer(&fileData, outPdf)
 	if err != nil {
 		return err
 	}
 
-	err = parseObjOnlyKeywordN(&raw, outPdf)
+	err = parseObjOnlyKeywordN(&fileData, outPdf)
 	if err != nil {
 		return err
 	}
